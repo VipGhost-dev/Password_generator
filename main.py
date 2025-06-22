@@ -20,10 +20,25 @@ def generator(length_password, use_ABC, use_123, use_specsymbols): #Логика
         chars += "!@#$%^&*"
     for i in range(10):
         password_generate = "".join(random.choice(chars) for _ in range(length_password))
+        password_generate = checker(password_generate, use_ABC, use_123, use_specsymbols, chars)
         passwords_list.append(password_generate)
         print(f"{i+1}. {password_generate}")
     
-
+def checker(password_generate, use_ABC, use_123, use_specsymbols, chars):
+    if use_ABC:
+        if not any(c.isupper() for c in password_generate):
+            password_generate = "".join(random.choice(chars) for _ in range(length_password))
+            password_generate = checker(password_generate, use_ABC, use_123, use_specsymbols, chars)
+    if use_123:
+        if not any(c.isdigit() for c in password_generate):
+            password_generate = "".join(random.choice(chars) for _ in range(length_password))
+            password_generate = checker(password_generate, use_ABC, use_123, use_specsymbols, chars)
+    if use_specsymbols:
+        if not any(c in string.punctuation for c in password_generate):
+            password_generate = "".join(random.choice(chars) for _ in range(length_password))
+            password_generate = checker(password_generate, use_ABC, use_123, use_specsymbols, chars)
+    return password_generate
+            
 
 def commands(length_password, use_ABC, use_123, use_specsymbols): #Текстовый интерфейс | Text interface
     print("Выберите нужную команду при помощи ввода текста с клавиатуры")
